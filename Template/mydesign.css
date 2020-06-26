@@ -1,0 +1,22 @@
+.middle{
+    text-align: center;
+    padding: 5px;
+    font-family: "Droid Serif";
+    background: rgba(133, 187, 222, 0.6);
+}
+
+.left{
+    text-align: center;
+    padding: 15px;
+    color: #1d211b;
+    font-family: "Droid Serif";
+    font-size: medium;
+}
+.topbar{
+    text-align: center;
+    text-shadow: #5a6268;
+    font-size: 50px;
+
+}
+
+
