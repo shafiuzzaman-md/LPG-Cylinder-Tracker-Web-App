@@ -35,6 +35,28 @@ type info struct {
 }
 
 func main() {
+	// Open up database connection.
+	db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
+
+	// if there is an error opening the connection, handle it
+	if err != nil {
+		panic(err.Error())
+	}
+
+	// defer the close till after the main function has finished
+	// executing
+	defer db.Close()
+
+	// perform a db.Query insert
+	insert, err := db.Query("INSERT INTO user_type VALUES (0, 'App User' )")
+
+	// if there is an error inserting, handle it
+	if err != nil {
+		panic(err.Error())
+	}
+	// be careful deferring Queries if you are using transactions
+	defer insert.Close()
+
 	http.HandleFunc("/users", apiResponse)
 
 	fs := http.FileServer(http.Dir("static/"))
@@ -46,7 +68,7 @@ func main() {
 	})
 
 	//tmpl := template.Must(template.ParseFiles("../temp.html"))
-	db, err := sql.Open("mysql", "root:hello@(35.200.196.27:3306)/cylindertracker")
+	//db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
 	if err != nil {
 		log.Fatal(err)
 	}
