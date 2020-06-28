@@ -3,11 +3,9 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"html/template"
+	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"net/http"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 func apiResponse(w http.ResponseWriter, r *http.Request) {
@@ -47,8 +45,8 @@ func main() {
 		http.ServeFile(w, req, "Template/temp.html")
 	})
 
-	tmpl := template.Must(template.ParseFiles("../temp.html"))
-	db, err := sql.Open("mysql", "kajol:kajol123@(192.168.43.140:3306)/Cylinder_tracking")
+	//tmpl := template.Must(template.ParseFiles("../temp.html"))
+	db, err := sql.Open("mysql", "root:hello@(35.200.196.27:3306)/cylindertracker")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -57,7 +55,7 @@ func main() {
 	}
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
-		qu := "select Offers, Select_Users, Open_Date, Close_Date, Checked from offer"
+		qu := "select name, email, phone from user"
 
 		rows, err := db.Query(qu)
 
@@ -77,7 +75,7 @@ func main() {
 		}
 		fmt.Println(informations)
 
-		tmpl.Execute(w, struct{ Informations []info }{informations})
+		//tmpl.Execute(w, struct{ Informations []info }{informations})
 	})
 
 	log.Fatal(http.ListenAndServe(":8090", nil))
