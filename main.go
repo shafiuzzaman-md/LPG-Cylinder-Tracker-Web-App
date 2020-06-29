@@ -1,8 +1,6 @@
 package main
 
 import (
-	"database/sql"
-	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"net/http"
@@ -36,7 +34,7 @@ type info struct {
 
 func main() {
 	// Open up database connection.
-	db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
+	/*db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
 
 	// if there is an error opening the connection, handle it
 	if err != nil {
@@ -55,12 +53,11 @@ func main() {
 		panic(err.Error())
 	}
 	// be careful deferring Queries if you are using transactions
-	defer insert.Close()
+	defer insert.Close()*/
+
+	http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("/static/mydeisgn.css"))))
 
 	http.HandleFunc("/users", apiResponse)
-
-	fs := http.FileServer(http.Dir("static/"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	http.HandleFunc("/temp", func(w http.ResponseWriter, req *http.Request) {
 
@@ -69,36 +66,37 @@ func main() {
 
 	//tmpl := template.Must(template.ParseFiles("../temp.html"))
 	//db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
-	if err != nil {
-		log.Fatal(err)
-	}
-	if err := db.Ping(); err != nil {
-		log.Fatal(err)
-	}
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-
-		qu := "select name, email, phone from user"
-
-		rows, err := db.Query(qu)
-
-		if err != nil {
+	/*	if err != nil {
 			log.Fatal(err)
 		}
+		if err := db.Ping(); err != nil {
+			log.Fatal(err)
+		}*/
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "Template/Home.html")
 
-		defer rows.Close()
+		/*	qu := "select name, email, phone from user"
 
-		var informations []info
-		for rows.Next() {
-			var temp info
-			err = rows.Scan(&temp.Offers, &temp.Select_Users, &temp.Open_Date, &temp.Close_Date, &temp.Checked)
+			rows, err := db.Query(qu)
 
-			informations = append(informations, temp)
+			if err != nil {
+				log.Fatal(err)
+			}
 
-		}
-		fmt.Println(informations)
+			defer rows.Close()
+
+			var informations []info
+			for rows.Next() {
+				var temp info
+				err = rows.Scan(&temp.Offers, &temp.Select_Users, &temp.Open_Date, &temp.Close_Date, &temp.Checked)
+
+				informations = append(informations, temp)
+
+			}
+			fmt.Println(informations)*/
 
 		//tmpl.Execute(w, struct{ Informations []info }{informations})
 	})
 
-	log.Fatal(http.ListenAndServe(":8090", nil))
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }

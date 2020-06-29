@@ -19,7 +19,7 @@
 </head>
 <body>
 <div class="container-fluid topbar">
-    Your are Using rest API
+    Cylinder Tracking
 </div>
 
 <div class="container-fluid">
@@ -27,37 +27,292 @@
     <div class="row">
         <div class="col-sm-2 left" >
 
-            <div>
-                <nav aria-label="breadcrumb">
-                    <a href="#">Home</a>
-                </nav>
-                <nav aria-label="breadcrumb">
-                    <a href="#">Users</a>
-                </nav>
-                <nav aria-label="breadcrumb">
-                    <a href="temp.html">History</a>
-                </nav>
-                <nav aria-label="breadcrumb">
-                    <a href="temp.html">Order</a>
-                </nav>
-                <nav aria-label="breadcrumb">
-                    <a href="temp.html">Scan & verify</a>
-                </nav>
-                <nav aria-label="breadcrumb">
-                    <a href="temp.html">New Offers</a>
-                </nav>
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active show" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>
+                <a class="nav-link" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-profile" aria-selected="false">Users</a>
+                <a class="nav-link" id="v-pills-scan-tab" data-toggle="pill" href="#v-pills-scan" role="tab" aria-controls="v-pills-messages" aria-selected="false">Scan & verify</a>
+                <a class="nav-link" id="v-pills-order-tab" data-toggle="pill" href="#v-pills-order" role="tab" aria-controls="v-pills-settings" aria-selected="false">Oder's</a>
+                <a class="nav-link" id="v-pills-offer-tab" data-toggle="pill" href="#v-pills-offer" role="tab" aria-controls="v-pills-settings" aria-selected="false">Offers</a>
             </div>
 
         </div>
         <div class="col-sm-9 middle">
-            Middle Part
+
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+
+                    You are in the front page.
+
+                    </div>
+
+                <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    <p>
+                    <table class="table table-bordered table-striped table-index">
+                        <h3 class="text-center ">User's Information </h3>
+                        <thead class="thead-light ">
+                        <tr >
+                            <th id="sl" scope="col">S.I</th>
+                            <th scope="col"> Name</th>
+                            <th scope="col">Address</th>
+                            <th scope="col"> Phone </th>
+                            <th scope="col"> Email </th>
+                            <th scope="col"> Password </th>
+                            <th scope="col"> Location </th>
+                            <th scope="col"> Download Date </th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <th>1</th>
+                            <th>Mark</th>
+                            <th>Ott</th>
+                            <th>03243343</th>
+                            <th>mark@gmail.com</th>
+                            <th>Mark123</th>
+                            <th>ottela</th>
+                            <th>23-06-020</th>
+                        </tr>
+
+                        <tr>
+                            <th>1</th>
+                            <th>Mark</th>
+                            <th>Ott</th>
+                            <th>03243343</th>
+                            <th>mark@gmail.com</th>
+                            <th>Mark123</th>
+                            <th>ottela</th>
+                            <th>23-06-020</th>
+                        </tr>
+
+
+                        <tr>
+                            <th>1</th>
+                            <th>Mark</th>
+                            <th>Ott</th>
+                            <th>03243343</th>
+                            <th>mark@gmail.com</th>
+                            <th>Mark123</th>
+                            <th>ottela</th>
+                            <th>23-06-020</th>
+                        </tr>
+
+                        <tr>
+                            <th>1</th>
+                            <th>Mark</th>
+                            <th>Ott</th>
+                            <th>03243343</th>
+                            <th>mark@gmail.com</th>
+                            <th>Mark123</th>
+                            <th>ottela</th>
+                            <th>23-06-020</th>
+                        </tr>
+                        </tbody>
+                        </table>
+                        </p>
+
+                    </div>
+
+                <div class="tab-pane fade" id="v-pills-scan" role="tabpanel" aria-labelledby="v-pills-scan-tab">
+
+                    <table class="table table-bordered table-striped ">
+                        <h3 class="text-center ">Scan & verify </h3>
+                        <thead class="thead-light ">
+                        <tr>
+                            <th scope="col">S.I</th>
+                            <th scope="col">Scanned Location</th>
+                            <th scope="col">User Account No./email</th>
+                            <th scope="col">Matched location</th>
+                            <th scope="col">Product ID</th>
+                            <th scope="col">Product SKU</th>
+                            <th scope="col">System Batched No</th>
+                            <th scope="col">System filled date</th>
+                            <th scope="col">System Delivered location</th>
+                            <th scope="col">System Delivered Date</th>
+                            <th scope="col" >Checked</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <th>1</th>
+                            <th>Dhaka</th>
+                            <th>0353DA</th>
+                            <th>YES</th>
+                            <th>544343</th>
+                            <th>2</th>
+                            <th>Mark</th>
+                            <th>Ott</th>
+                            <th>Male</th>
+                            <th>DHAKA</th>
+                            <th>YES</th>
+
+                        </tr>
+
+
+                        <tr>
+                            <th>1</th>
+                            <th>Dhaka</th>
+                            <th>0353DA</th>
+                            <th>YES</th>
+                            <th>544343</th>
+                            <th>2</th>
+                            <th>Mark</th>
+                            <th>Ott</th>
+                            <th>Male</th>
+                            <th>DHAKA</th>
+                            <th>YES</th>
+
+                        </tr>
+
+                        <tr>
+                            <th>1</th>
+                            <th>Dhaka</th>
+                            <th>0353DA</th>
+                            <th>YES</th>
+                            <th>544343</th>
+                            <th>2</th>
+                            <th>Mark</th>
+                            <th>Ott</th>
+                            <th>Male</th>
+                            <th>DHAKA</th>
+                            <th>YES</th>
+
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    </div>
+                <div class="tab-pane fade" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab">
+
+                    <table class="table table-bordered table-striped ">
+                        <h3 class="text-center ">Order Tables </h3>
+                        <thead class="thead-light ">
+                        <tr>
+                            <th scope="col">S.I</th>
+                            <th scope="col">Order No</th>
+                            <th scope="col">User Account No.</th>
+                            <th scope="col">User Name</th>
+                            <th scope="col">Delivered Address</th>
+                            <th scope="col">Delivered Location</th>
+                            <th scope="col">Product SKU</th>
+                            <th scope="col">Product QTY</th>
+                            <th scope="col">Requested Delivery date</th>
+                            <th scope="col" >Checked</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <th>1</th>
+                            <th>Dhaka</th>
+                            <th>0353DA</th>
+                            <th>YES</th>
+                            <th>544343</th>
+                            <th>Mark</th>
+                            <th>Ott</th>
+                            <th>Male</th>
+                            <th>DHAKA</th>
+                            <th>YES</th>
+
+                        </tr>
+
+
+                        <tr>
+                            <th>1</th>
+                            <th>Dhaka</th>
+                            <th>0353DA</th>
+                            <th>YES</th>
+                            <th>544343</th>
+                            <th>Mark</th>
+                            <th>Ott</th>
+                            <th>Male</th>
+                            <th>DHAKA</th>
+                            <th>YES</th>
+
+                        </tr>
+
+                        <tr>
+                            <th>1</th>
+                            <th>Dhaka</th>
+                            <th>0353DA</th>
+                            <th>YES</th>
+                            <th>544343</th>
+                            <th>Mark</th>
+                            <th>Ott</th>
+                            <th>Male</th>
+                            <th>DHAKA</th>
+                            <th>YES</th>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="tab-pane fade" id="v-pills-offer" role="tabpanel" aria-labelledby="v-pills-offer-tab">
+                    <table class="table table-bordered table-striped ">
+                        <h3 class="text-center "> New Offers </h3>
+                        <thead class="thead-light ">
+                        <tr>
+                            <th scope="col">S.I</th>
+                            <th scope="col">Offer</th>
+                            <th scope="col">Select Users</th>
+                            <th scope="col">Open Date</th>
+                            <th scope="col">Close Date</th>
+                            <th scope="col" >Checked</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <tr>
+                            <th>1</th>
+                            <th>Dhaka</th>
+                            <th>Dhaka</th>
+                            <th>0353DA</th>
+                            <th>YES</th>
+                            <th>YES</th>
+
+                        </tr>
+
+
+                        <tr>
+                            <th>1</th>
+                            <th>Dhaka</th>
+                            <th>0353DA</th>
+                            <th>YES</th>
+                            <th>DHAKA</th>
+                            <th>YES</th>
+
+                        </tr>
+
+                        <tr>
+                            <th>1</th>
+                            <th>Dhaka</th>
+                            <th>0353DA</th>
+                            <th>YES</th>
+                            <th>DHAKA</th>
+                            <th>YES</th>
+
+                        </tr>
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            </div>
+
+
 
         </div>
 
 
         <div class="col-sm-1" style="background-color:#f0fcff;">
-
-            Right Side
+            <!--      comment right side bar--!>
         </div>
     </div>
 </div>
