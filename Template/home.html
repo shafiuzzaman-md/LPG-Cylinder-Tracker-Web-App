@@ -18,7 +18,7 @@
 
 </head>
 <body>
-<div class="container-fluid topbar">
+<div class="container-fluid topbar text-center">
     Cylinder Tracking
 </div>
 
@@ -265,40 +265,17 @@
 
                         <tbody>
 
-                        <tr>
-                            <th>1</th>
-                            <th>Dhaka</th>
-                            <th>Dhaka</th>
-                            <th>0353DA</th>
-                            <th>YES</th>
-                            <th>YES</th>
-
-                        </tr>
-
-
-                        <tr>
-                            <th>1</th>
-                            <th>Dhaka</th>
-                            <th>0353DA</th>
-                            <th>YES</th>
-                            <th>DHAKA</th>
-                            <th>YES</th>
-
-                        </tr>
-
-                        <tr>
-                            <th>1</th>
-                            <th>Dhaka</th>
-                            <th>0353DA</th>
-                            <th>YES</th>
-                            <th>DHAKA</th>
-                            <th>YES</th>
-
-                        </tr>
-
-
+                        {{ range .Informations }}
+                            <tr>
+                                <th>11</th>
+                                <th>{{ .offer }}</th>
+                                <th>{{ .Select_Users }}</th>
+                                <th>{{ .Open_Date }}</th>
+                                <th>{{ .Close_Date }}</th>
+                                <th>{{ .checked }}</th>
+                            </tr>
+                        {{ end }}
                         </tbody>
-
                     </table>
 
                 </div>

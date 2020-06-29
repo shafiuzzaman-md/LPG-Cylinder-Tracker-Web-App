@@ -3,11 +3,12 @@ package main
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
+	"html/template"
 	"log"
 	"net/http"
 )
 
-func apiResponse(w http.ResponseWriter, r *http.Request) {
+/*func apiResponse(w http.ResponseWriter, r *http.Request) {
 	// Set the return Content-Type as JSON like before
 	w.Header().Set("Content-Type", "application/json")
 
@@ -23,17 +24,17 @@ func apiResponse(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte(`{"message": "Can't find method requested"}`))
 	}
-}
+}*/
 
 type info struct {
-	Offers       string
-	Select_Users string
-	Open_Date    string
-	Close_Date   string
-	Checked      string
+	Offers      string
+	SelectUsers string
+	OpenDate    string
+	CloseDate   string
+	Checked     string
 }
 
-func SentData() {
+/*func SentData() {
 	db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
 
 	if err != nil {
@@ -46,8 +47,11 @@ func SentData() {
 	}
 	defer insert.Close()
 }
-
+*/
 func main() {
+
+	tmpl := template.Must(template.ParseFiles("home.html"))
+
 	// Open up database connection.
 	db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
 
@@ -61,58 +65,35 @@ func main() {
 	defer db.Close()
 
 	//method calling
-	SentData()
-	// perform a db.Query insert
-	/*insert, err := db.Query("INSERT INTO user_type VALUES (3, 'Web User' )")
+	//SentData()
 
-	// if there is an error inserting, handle it
-	if err != nil {
-		panic(err.Error())
-	}
-	// be careful deferring Queries if you are using transactions
-	defer insert.Close()*/
+	//http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("/static/mydeisgn.css"))))
 
-	http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("/static/mydeisgn.css"))))
+	//http.HandleFunc("/users", apiResponse)
 
-	http.HandleFunc("/users", apiResponse)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "home.html")
+		qu := "select longitude, latitude,sku,date,phone_identity from scan"
 
-	http.HandleFunc("/temp", func(w http.ResponseWriter, req *http.Request) {
+		rows, err := db.Query(qu)
 
-		http.ServeFile(w, req, "Template/temp.html")
-	})
-
-	//tmpl := template.Must(template.ParseFiles("../temp.html"))
-	//db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
-	/*	if err != nil {
+		if err != nil {
 			log.Fatal(err)
 		}
-		if err := db.Ping(); err != nil {
-			log.Fatal(err)
-		}*/
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "Template/Home.html")
+		defer rows.Close()
 
-		/*	qu := "select name, email, phone from user"
+		var informations []info
+		for rows.Next() {
+			var temp info
+			err = rows.Scan(&temp.Offers, &temp.SelectUsers, &temp.OpenDate, &temp.CloseDate, &temp.Checked)
 
-			rows, err := db.Query(qu)
+			informations = append(informations, temp)
 
-			if err != nil {
-				log.Fatal(err)
-			}
+		}
+		//fmt.Println(informations)
+		//http.Redirect(w, r, "/", 302)
 
-			defer rows.Close()
-
-			var informations []info
-			for rows.Next() {
-				var temp info
-				err = rows.Scan(&temp.Offers, &temp.Select_Users, &temp.Open_Date, &temp.Close_Date, &temp.Checked)
-
-				informations = append(informations, temp)
-
-			}
-			fmt.Println(informations)*/
-
-		//tmpl.Execute(w, struct{ Informations []info }{informations})
+		tmpl.Execute(w, struct{ Informations []info }{informations})
 	})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
