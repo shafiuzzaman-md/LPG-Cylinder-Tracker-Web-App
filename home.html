@@ -120,65 +120,38 @@
                         <thead class="thead-light ">
                         <tr>
                             <th scope="col">S.I</th>
-                            <th scope="col">Scanned Location</th>
-                            <th scope="col">User Account No./email</th>
+                            <th scope="col">Scanned Longitude</th>
+                            <th scope="col">Scanned Latitude</th>
+                            <th scope="col">User Account</th>
                             <th scope="col">Matched location</th>
                             <th scope="col">Product ID</th>
                             <th scope="col">Product SKU</th>
-                            <th scope="col">System Batched No</th>
-                            <th scope="col">System filled date</th>
-                            <th scope="col">System Delivered location</th>
-                            <th scope="col">System Delivered Date</th>
+                            <th scope="col">Batched No</th>
+                            <th scope="col">Filled date</th>
+                            <th scope="col">Delivered location</th>
+                            <th scope="col">Delivered Date</th>
                             <th scope="col" >Checked</th>
                         </tr>
                         </thead>
 
                         <tbody>
-                        <tr>
-                            <th>1</th>
-                            <th>Dhaka</th>
-                            <th>0353DA</th>
-                            <th>YES</th>
-                            <th>544343</th>
-                            <th>2</th>
-                            <th>Mark</th>
-                            <th>Ott</th>
-                            <th>Male</th>
-                            <th>DHAKA</th>
-                            <th>YES</th>
+                            {{ range .ScanData }}
+                                <tr>
+                                    <th>{{.IdScan}}</th>
+                                    <th>{{.Longitude}}</th>
+                                    <th>{{.Latitude}}</th>
+                                    <th>{{.UserID}}</th>
+                                    <th>Not Yet</th>
+                                    <th>Not Yet</th>
+                                    <th>{{.SKU}}</th>
+                                    <th>Not Yet</th>
+                                    <th>{{.FillDate}}</th>
+                                    <th>Not Yet</th>
+                                    <th>Not Yet</th>
+                                    <th>{{.Phone}}</th>
+                                </tr>
+                            {{ end }}
 
-                        </tr>
-
-
-                        <tr>
-                            <th>1</th>
-                            <th>Dhaka</th>
-                            <th>0353DA</th>
-                            <th>YES</th>
-                            <th>544343</th>
-                            <th>2</th>
-                            <th>Mark</th>
-                            <th>Ott</th>
-                            <th>Male</th>
-                            <th>DHAKA</th>
-                            <th>YES</th>
-
-                        </tr>
-
-                        <tr>
-                            <th>1</th>
-                            <th>Dhaka</th>
-                            <th>0353DA</th>
-                            <th>YES</th>
-                            <th>544343</th>
-                            <th>2</th>
-                            <th>Mark</th>
-                            <th>Ott</th>
-                            <th>Male</th>
-                            <th>DHAKA</th>
-                            <th>YES</th>
-
-                        </tr>
                         </tbody>
                     </table>
 
@@ -265,7 +238,6 @@
 
                         <tbody>
 
-
                         <tr>
                             <th>1</th>
                             <th>10% discount</th>
@@ -274,17 +246,6 @@
                             <th> 30-06-2020</th>
                             <th>YES</th>
                         </tr>
-
-                        {{ range .Information }}
-                            <tr>
-                                <th>2</th>
-                                <th>{{.Offers}}</th>
-                                <th>{{.SelectUsers}}</th>
-                                <th>{{.OpenDate}}</th>
-                                <th>{{.CloseDate }}</th>
-                                <th>{{.Checked}}</th>
-                            </tr>
-                        {{ end }}
 
                         </tbody>
                     </table>

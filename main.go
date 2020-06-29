@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"html/template"
 	"log"
@@ -33,6 +32,16 @@ type info struct {
 	OpenDate    string
 	CloseDate   string
 	Checked     string
+}
+
+type ScanInfo struct {
+	IdScan    string
+	Longitude string
+	Latitude  string
+	UserID    string
+	SKU       string
+	FillDate  string
+	Phone     string
 }
 
 /*func SentData() {
@@ -74,28 +83,25 @@ func main() {
 
 		tmpl := template.Must(template.ParseFiles("home.html"))
 
-		qu := "select longitude, latitude,sku,date,phone_identity from scan"
+		quryScan := "select  idscan, longitude,latitude,user_id, sku, date, phone_identity from scan"
 
-		rows, err := db.Query(qu)
+		rows, err := db.Query(quryScan)
 
 		if err != nil {
 			log.Fatal(err)
 		}
 		defer rows.Close()
 
-		var informations []info
+		var scans []ScanInfo
 		for rows.Next() {
-			var temp info
-			err = rows.Scan(&temp.Offers, &temp.SelectUsers, &temp.OpenDate, &temp.CloseDate, &temp.Checked)
+			var temp ScanInfo
+			err = rows.Scan(&temp.IdScan, &temp.Longitude, &temp.Latitude, &temp.UserID, &temp.SKU, &temp.FillDate, &temp.Phone)
 
-			informations = append(informations, temp)
-
+			scans = append(scans, temp)
+			//fmt.Println(temp)
 		}
-		Informations := informations
-		//http.Redirect(w, r, "/", 302)
-		fmt.Println(Informations)
 
-		tmpl.Execute(w, struct{ Information []info }{informations})
+		tmpl.Execute(w, struct{ ScanData []ScanInfo }{scans})
 	})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
