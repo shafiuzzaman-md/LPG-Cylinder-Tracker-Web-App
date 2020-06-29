@@ -25,7 +25,7 @@
 <div class="container-fluid">
 
     <div class="row">
-        <div class="col-sm-2 left" >
+        <div class="col-sm-2 left text-center" >
 
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active show" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>
@@ -265,16 +265,27 @@
 
                         <tbody>
 
-                        {{ range .Informations }}
+
+                        <tr>
+                            <th>1</th>
+                            <th>10% discount</th>
+                            <th>All Users </th>
+                            <th> 29-06-2020</th>
+                            <th> 30-06-2020</th>
+                            <th>YES</th>
+                        </tr>
+
+                        {{ range .Information }}
                             <tr>
-                                <th>11</th>
-                                <th>{{ .offer }}</th>
-                                <th>{{ .SelectUsers }}</th>
-                                <th>{{ .OpenDate }}</th>
-                                <th>{{ .CloseDate }}</th>
-                                <th>{{ .checked }}</th>
+                                <th>2</th>
+                                <th>{{.Offers}}</th>
+                                <th>{{.SelectUsers}}</th>
+                                <th>{{.OpenDate}}</th>
+                                <th>{{.CloseDate }}</th>
+                                <th>{{.Checked}}</th>
                             </tr>
                         {{ end }}
+
                         </tbody>
                     </table>
 
@@ -289,7 +300,7 @@
 
 
         <div class="col-sm-1" style="background-color:#f0fcff;">
-            <!--      comment right side bar--!>
+
         </div>
     </div>
 </div>

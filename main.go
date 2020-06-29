@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"html/template"
 	"log"
@@ -50,8 +51,6 @@ type info struct {
 */
 func main() {
 
-	tmpl := template.Must(template.ParseFiles("home.html"))
-
 	// Open up database connection.
 	db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
 
@@ -72,7 +71,9 @@ func main() {
 	//http.HandleFunc("/users", apiResponse)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "home.html")
+
+		tmpl := template.Must(template.ParseFiles("home.html"))
+
 		qu := "select longitude, latitude,sku,date,phone_identity from scan"
 
 		rows, err := db.Query(qu)
@@ -90,10 +91,11 @@ func main() {
 			informations = append(informations, temp)
 
 		}
-		//fmt.Println(informations)
+		Informations := informations
 		//http.Redirect(w, r, "/", 302)
+		fmt.Println(Informations)
 
-		tmpl.Execute(w, struct{ Informations []info }{informations})
+		tmpl.Execute(w, struct{ Information []info }{informations})
 	})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
