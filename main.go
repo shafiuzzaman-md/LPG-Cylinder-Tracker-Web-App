@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"net/http"
@@ -32,9 +33,23 @@ type info struct {
 	Checked      string
 }
 
+func SentData() {
+	db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
+
+	if err != nil {
+		panic(err.Error())
+	}
+	defer db.Close()
+	insert, err := db.Query("INSERT INTO scan VALUES (4, '34.0232','23.5454', 2,'KAJOL','29-06-2020','01773126589' )")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer insert.Close()
+}
+
 func main() {
 	// Open up database connection.
-	/*db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
+	db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
 
 	// if there is an error opening the connection, handle it
 	if err != nil {
@@ -45,8 +60,10 @@ func main() {
 	// executing
 	defer db.Close()
 
+	//method calling
+	SentData()
 	// perform a db.Query insert
-	insert, err := db.Query("INSERT INTO user_type VALUES (0, 'App User' )")
+	/*insert, err := db.Query("INSERT INTO user_type VALUES (3, 'Web User' )")
 
 	// if there is an error inserting, handle it
 	if err != nil {
