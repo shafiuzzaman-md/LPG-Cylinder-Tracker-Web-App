@@ -6,17 +6,31 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strings"
 )
 
-/*func apiResponse(w http.ResponseWriter, r *http.Request) {
-	// Set the return Content-Type as JSON like before
+func apiResponse(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	// Change the response depending on the method being requested
 	switch r.Method {
 	case "GET":
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"name": "Hira"},{"name":"kajol"}]`))
+		q := r.URL.Query()
+
+		if len(q) < 3 {
+			//log.Println("Url Param 'key' is missing")
+			w.Write([]byte("Url Param 'key' is missing"))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		} else {
+			longitude := strings.Join(q["longitude"], " ")
+			//fmt.Println(longitude)
+			latitude := strings.Join(q["latitude"], " ")
+			sku := strings.Join(q["sku"], " ")
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("Saved Successfully"))
+			SentData(longitude, latitude, sku)
+		}
+
 	case "POST":
 		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte(`{"message": "POST method requested"}`))
@@ -24,7 +38,7 @@ import (
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte(`{"message": "Can't find method requested"}`))
 	}
-}*/
+}
 
 type UserInfo struct {
 	IdUser    string
@@ -47,35 +61,29 @@ type ScanInfo struct {
 	Phone     string
 }
 
-/*func SentData() {
+func SentData(longitude string, latitude string, sku string) {
 	db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
 
 	if err != nil {
 		panic(err.Error())
 	}
 	defer db.Close()
-	insert, err := db.Query("INSERT INTO scan VALUES (4, '34.0232','23.5454', 2,'KAJOL','29-06-2020','01773126589' )")
+	sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 2,'KAJOL','29-06-2020','01773126589' )"
+	insert, err := db.Query(sql)
 	if err != nil {
 		panic(err.Error())
 	}
 	defer insert.Close()
 }
-*/
 
 func main() {
 
-	//method calling
-	//SentData()
-
-	//http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("/static/mydeisgn.css"))))
-	//http.HandleFunc("/users", apiResponse)
+	http.HandleFunc("/scan", apiResponse)
 	http.HandleFunc("/", ScanData)
-
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func ScanData(w http.ResponseWriter, r *http.Request) {
-
 	tmpl := template.Must(template.ParseFiles("home.html"))
 	db, err := sql.Open("mysql", "kajol:kajol123@(192.168.43.140:3306)/cylindertracker")
 	if err != nil {
