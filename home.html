@@ -53,60 +53,30 @@
                         <tr >
                             <th id="sl" scope="col">S.I</th>
                             <th scope="col"> Name</th>
+                            <th scope="col"> User Type</th>
                             <th scope="col">Address</th>
                             <th scope="col"> Phone </th>
                             <th scope="col"> Email </th>
                             <th scope="col"> Password </th>
                             <th scope="col"> Location </th>
-                            <th scope="col"> Download Date </th>
+                            <th scope="col"> Time </th>
                         </tr>
                         </thead>
 
                         <tbody>
-                        <tr>
-                            <th>1</th>
-                            <th>Mark</th>
-                            <th>Ott</th>
-                            <th>03243343</th>
-                            <th>mark@gmail.com</th>
-                            <th>Mark123</th>
-                            <th>ottela</th>
-                            <th>23-06-020</th>
-                        </tr>
-
-                        <tr>
-                            <th>1</th>
-                            <th>Mark</th>
-                            <th>Ott</th>
-                            <th>03243343</th>
-                            <th>mark@gmail.com</th>
-                            <th>Mark123</th>
-                            <th>ottela</th>
-                            <th>23-06-020</th>
-                        </tr>
-
-
-                        <tr>
-                            <th>1</th>
-                            <th>Mark</th>
-                            <th>Ott</th>
-                            <th>03243343</th>
-                            <th>mark@gmail.com</th>
-                            <th>Mark123</th>
-                            <th>ottela</th>
-                            <th>23-06-020</th>
-                        </tr>
-
-                        <tr>
-                            <th>1</th>
-                            <th>Mark</th>
-                            <th>Ott</th>
-                            <th>03243343</th>
-                            <th>mark@gmail.com</th>
-                            <th>Mark123</th>
-                            <th>ottela</th>
-                            <th>23-06-020</th>
-                        </tr>
+                            {{range .UserInfo}}
+                                <tr>
+                                     <th>{{.IdUser}}</th>
+                                     <th>{{.UserName}}</th>
+                                     <th>{{.UserType}}</th>
+                                    <th> {{.Address}}</th>
+                                    <th>{{.Phone}}</th>
+                                    <th>{{.UserEmail}}</th>
+                                    <th>{{.Password}}</th>
+                                    <th>Dhaka</th>
+                                    <th>{{.Date}}</th>
+                                </tr>
+                            {{ end }}
                         </tbody>
                         </table>
                         </p>
