@@ -56,7 +56,7 @@ func apiResponse(w http.ResponseWriter, r *http.Request) {
 			//log.Println("Url Param 'key' is missing")
 			w.Write([]byte("Url Param 'key' is missing"))
 			//w.WriteHeader(http.StatusBadRequest)
-			SentData("100", "30", "12345")
+			//SentData("100", "30", "12345")
 			return
 		} else {
 			longitude := strings.Join(q["longitude"], " ")
@@ -66,7 +66,7 @@ func apiResponse(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			result := longitude + latitude + sku
 			w.Write([]byte(result))
-			//SentData(longitude, latitude, sku)
+			SentData(longitude, latitude, sku)
 		}
 
 	case "POST":
@@ -76,6 +76,55 @@ func apiResponse(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte(`{"message": "Can't find method requested"}`))
 	}
+}
+
+func SentData(longitude string, latitude string, sku string) {
+	var err error
+
+	if os.Getenv("DB_TCP_HOST") != "" {
+		db, err = initTcpConnectionPool()
+		if err != nil {
+			log.Fatalf("initTcpConnectionPool: unable to connect: %s", err)
+		}
+	} else {
+		db, err = initSocketConnectionPool()
+		if err != nil {
+			log.Fatalf("initSocketConnectionPool: unable to connect: %s", err)
+		}
+	}
+	sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 1," + sku + ",'29-06-2020','01773126589' )"
+	//sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 2,'KAJOL','29-06-2020','01773126589' )"
+
+	//insert, err := db.Query(sql)
+	if _, err = db.Exec(sql); err != nil {
+		log.Fatalf("DB.Exec: unable to insert into scan table: %s", err)
+	}
+
+	//http.HandleFunc("/", indexHandler)
+	/*port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	/*log.Printf("Listening on port %s", port)
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
+		log.Fatal(err)
+	}*/
+
+	//db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
+
+	//if err != nil {
+	//	panic(err.Error())
+	//}
+	//defer db.Close()
+	//sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 2,'KAJOL','29-06-2020','01773126589' )"
+
+	//insert, err := db.Query(sql)
+	//if err != nil {
+	//	panic(err.Error())
+	//}
+	//
+	//defer insert.Close()
 }
 
 // initTcpConnectionPool initializes a TCP connection pool for a Cloud SQL
@@ -151,55 +200,6 @@ func configureConnectionPool(dbPool *sql.DB) {
 	dbPool.SetConnMaxLifetime(1800)
 
 	// [END cloud_sql_mysql_databasesql_lifetime]
-}
-
-func SentData(longitude string, latitude string, sku string) {
-	var err error
-
-	if os.Getenv("DB_TCP_HOST") != "" {
-		db, err = initTcpConnectionPool()
-		if err != nil {
-			log.Fatalf("initTcpConnectionPool: unable to connect: %s", err)
-		}
-	} else {
-		db, err = initSocketConnectionPool()
-		if err != nil {
-			log.Fatalf("initSocketConnectionPool: unable to connect: %s", err)
-		}
-	}
-	sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 2,'9867411','29-06-2020','01773126589' )"
-	//sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 2,'KAJOL','29-06-2020','01773126589' )"
-
-	//insert, err := db.Query(sql)
-	if _, err = db.Exec(sql); err != nil {
-		log.Fatalf("DB.Exec: unable to insert into scan table: %s", err)
-	}
-
-	//http.HandleFunc("/", indexHandler)
-	/*port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-
-	/*log.Printf("Listening on port %s", port)
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		log.Fatal(err)
-	}*/
-
-	//db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
-
-	//if err != nil {
-	//	panic(err.Error())
-	//}
-	//defer db.Close()
-	//sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 2,'KAJOL','29-06-2020','01773126589' )"
-
-	//insert, err := db.Query(sql)
-	//if err != nil {
-	//	panic(err.Error())
-	//}
-	//
-	//defer insert.Close()
 }
 
 func main() {
