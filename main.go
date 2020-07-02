@@ -7,11 +7,43 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 )
 
 // db is the global database connection pool.
 var db *sql.DB
+
+type UserInfo struct {
+	IdUser    string
+	UserName  string
+	Address   string
+	Phone     string
+	UserEmail string
+	Password  string
+	UserType  string
+	Date      string
+}
+
+type ScanInfo struct {
+	IdScan    string
+	Longitude string
+	Latitude  string
+	UserID    string
+	SKU       string
+	FillDate  string
+	Phone     string
+}
+
+// mustGetEnv is a helper function for getting environment variables.
+// Displays a warning if the environment variable is not set.
+func mustGetenv(k string) string {
+	v := os.Getenv(k)
+	if v == "" {
+		log.Printf("Warning: %s environment variable not set.\n", k)
+	}
+	return v
+}
 
 func apiResponse(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -46,36 +78,15 @@ func apiResponse(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-type UserInfo struct {
-	IdUser    string
-	UserName  string
-	Address   string
-	Phone     string
-	UserEmail string
-	Password  string
-	UserType  string
-	Date      string
-}
-
-type ScanInfo struct {
-	IdScan    string
-	Longitude string
-	Latitude  string
-	UserID    string
-	SKU       string
-	FillDate  string
-	Phone     string
-}
-
 // initTcpConnectionPool initializes a TCP connection pool for a Cloud SQL
 // instance of MySQL.
 func initTcpConnectionPool() (*sql.DB, error) {
 	// [START cloud_sql_mysql_databasesql_create_tcp]
 	var (
-		dbUser    = "root"
-		dbPwd     = "123456"
-		dbTcpHost = "35.222.35.168:3306"
-		dbName    = "cylindertracker"
+		dbUser    = mustGetenv("DB_USER")
+		dbPwd     = mustGetenv("DB_PASS")
+		dbTcpHost = mustGetenv("DB_TCP_HOST")
+		dbName    = mustGetenv("DB_NAME")
 	)
 
 	var dbURI string
@@ -100,10 +111,10 @@ func initTcpConnectionPool() (*sql.DB, error) {
 func initSocketConnectionPool() (*sql.DB, error) {
 	// [START cloud_sql_mysql_databasesql_create_socket]
 	var (
-		dbUser                 = "root"
-		dbPwd                  = "123456"
-		instanceConnectionName = "cylinder-tracker-282110:us-central1:cylinder-tracker-db"
-		dbName                 = "cylindertracker"
+		dbUser                 = mustGetenv("DB_USER")
+		dbPwd                  = mustGetenv("DB_PASS")
+		instanceConnectionName = mustGetenv("INSTANCE_CONNECTION_NAME")
+		dbName                 = mustGetenv("DB_NAME")
 	)
 
 	var dbURI string
@@ -145,17 +156,17 @@ func configureConnectionPool(dbPool *sql.DB) {
 func SentData(longitude string, latitude string, sku string) {
 	var err error
 
-	//if os.Getenv("DB_TCP_HOST") != "" {
-	db, err = initTcpConnectionPool()
-	if err != nil {
-		log.Fatalf("initTcpConnectionPool: unable to connect: %s", err)
-	}
-	/*} else {
+	if os.Getenv("DB_TCP_HOST") != "" {
+		db, err = initTcpConnectionPool()
+		if err != nil {
+			log.Fatalf("initTcpConnectionPool: unable to connect: %s", err)
+		}
+	} else {
 		db, err = initSocketConnectionPool()
 		if err != nil {
 			log.Fatalf("initSocketConnectionPool: unable to connect: %s", err)
 		}
-	}*/
+	}
 	sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 5,'9867411','29-06-2020','01773126589' )"
 	//sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 2,'KAJOL','29-06-2020','01773126589' )"
 
