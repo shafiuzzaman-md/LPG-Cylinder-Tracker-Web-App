@@ -167,7 +167,7 @@ func SentData(longitude string, latitude string, sku string) {
 			log.Fatalf("initSocketConnectionPool: unable to connect: %s", err)
 		}
 	}
-	sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 5,'9867411','29-06-2020','01773126589' )"
+	sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 2,'9867411','29-06-2020','01773126589' )"
 	//sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 2,'KAJOL','29-06-2020','01773126589' )"
 
 	//insert, err := db.Query(sql)
