@@ -2,12 +2,16 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"html/template"
 	"log"
 	"net/http"
 	"strings"
 )
+
+// db is the global database connection pool.
+var db *sql.DB
 
 func apiResponse(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -19,7 +23,8 @@ func apiResponse(w http.ResponseWriter, r *http.Request) {
 		if len(q) < 3 {
 			//log.Println("Url Param 'key' is missing")
 			w.Write([]byte("Url Param 'key' is missing"))
-			w.WriteHeader(http.StatusBadRequest)
+			//w.WriteHeader(http.StatusBadRequest)
+			SentData("100", "30", "12345")
 			return
 		} else {
 			longitude := strings.Join(q["longitude"], " ")
@@ -27,8 +32,9 @@ func apiResponse(w http.ResponseWriter, r *http.Request) {
 			latitude := strings.Join(q["latitude"], " ")
 			sku := strings.Join(q["sku"], " ")
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte("Saved Successfully"))
-			SentData(longitude, latitude, sku)
+			result := longitude + latitude + sku
+			w.Write([]byte(result))
+			//SentData(longitude, latitude, sku)
 		}
 
 	case "POST":
@@ -61,23 +67,131 @@ type ScanInfo struct {
 	Phone     string
 }
 
-func SentData(longitude string, latitude string, sku string) {
-	db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
+// initTcpConnectionPool initializes a TCP connection pool for a Cloud SQL
+// instance of MySQL.
+func initTcpConnectionPool() (*sql.DB, error) {
+	// [START cloud_sql_mysql_databasesql_create_tcp]
+	var (
+		dbUser    = "root"
+		dbPwd     = "123456"
+		dbTcpHost = "35.222.35.168:3306"
+		dbName    = "cylindertracker"
+	)
 
+	var dbURI string
+	dbURI = fmt.Sprintf("%s:%s@tcp(%s)/%s", dbUser, dbPwd, dbTcpHost, dbName)
+
+	// dbPool is the pool of database connections.
+	dbPool, err := sql.Open("mysql", dbURI)
 	if err != nil {
-		panic(err.Error())
+		return nil, fmt.Errorf("sql.Open: %v", err)
 	}
-	defer db.Close()
-	sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 2,'KAJOL','29-06-2020','01773126589' )"
-	insert, err := db.Query(sql)
+
+	// [START_EXCLUDE]
+	configureConnectionPool(dbPool)
+	// [END_EXCLUDE]
+
+	return dbPool, nil
+	// [END cloud_sql_mysql_databasesql_create_tcp]
+}
+
+// initSocketConnectionPool initializes a Unix socket connection pool for
+// a Cloud SQL instance of MySQL.
+func initSocketConnectionPool() (*sql.DB, error) {
+	// [START cloud_sql_mysql_databasesql_create_socket]
+	var (
+		dbUser                 = "root"
+		dbPwd                  = "123456"
+		instanceConnectionName = "cylinder-tracker-282110:us-central1:cylinder-tracker-db"
+		dbName                 = "cylindertracker"
+	)
+
+	var dbURI string
+	dbURI = fmt.Sprintf("%s:%s@unix(/cloudsql/%s)/%s", dbUser, dbPwd, instanceConnectionName, dbName)
+
+	// dbPool is the pool of database connections.
+	dbPool, err := sql.Open("mysql", dbURI)
 	if err != nil {
-		panic(err.Error())
+		return nil, fmt.Errorf("sql.Open: %v", err)
 	}
-	defer insert.Close()
+
+	// [START_EXCLUDE]
+	configureConnectionPool(dbPool)
+	// [END_EXCLUDE]
+
+	return dbPool, nil
+	// [END cloud_sql_mysql_databasesql_create_socket]
+}
+
+func configureConnectionPool(dbPool *sql.DB) {
+	// [START cloud_sql_mysql_databasesql_limit]
+
+	// Set maximum number of connections in idle connection pool.
+	dbPool.SetMaxIdleConns(5)
+
+	// Set maximum number of open connections to the database.
+	dbPool.SetMaxOpenConns(7)
+
+	// [END cloud_sql_mysql_databasesql_limit]
+
+	// [START cloud_sql_mysql_databasesql_lifetime]
+
+	// Set Maximum time (in seconds) that a connection can remain open.
+	dbPool.SetConnMaxLifetime(1800)
+
+	// [END cloud_sql_mysql_databasesql_lifetime]
+}
+
+func SentData(longitude string, latitude string, sku string) {
+	var err error
+
+	//if os.Getenv("DB_TCP_HOST") != "" {
+	db, err = initTcpConnectionPool()
+	if err != nil {
+		log.Fatalf("initTcpConnectionPool: unable to connect: %s", err)
+	}
+	/*} else {
+		db, err = initSocketConnectionPool()
+		if err != nil {
+			log.Fatalf("initSocketConnectionPool: unable to connect: %s", err)
+		}
+	}*/
+	sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 5,'9867411','29-06-2020','01773126589' )"
+	//sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 2,'KAJOL','29-06-2020','01773126589' )"
+
+	//insert, err := db.Query(sql)
+	if _, err = db.Exec(sql); err != nil {
+		log.Fatalf("DB.Exec: unable to insert into scan table: %s", err)
+	}
+
+	//http.HandleFunc("/", indexHandler)
+	/*port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	/*log.Printf("Listening on port %s", port)
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
+		log.Fatal(err)
+	}*/
+
+	//db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
+
+	//if err != nil {
+	//	panic(err.Error())
+	//}
+	//defer db.Close()
+	//sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 2,'KAJOL','29-06-2020','01773126589' )"
+
+	//insert, err := db.Query(sql)
+	//if err != nil {
+	//	panic(err.Error())
+	//}
+	//
+	//defer insert.Close()
 }
 
 func main() {
-
 	http.HandleFunc("/scan", apiResponse)
 	http.HandleFunc("/", ScanData)
 	log.Fatal(http.ListenAndServe(":8080", nil))
