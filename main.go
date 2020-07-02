@@ -64,8 +64,8 @@ func apiResponse(w http.ResponseWriter, r *http.Request) {
 			latitude := strings.Join(q["latitude"], " ")
 			sku := strings.Join(q["sku"], " ")
 			w.WriteHeader(http.StatusOK)
-			result := longitude + latitude + sku
-			w.Write([]byte(result))
+			//result := longitude + latitude + sku
+			w.Write([]byte("Saved Successfully"))
 			SentData(longitude, latitude, sku)
 		}
 
