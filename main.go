@@ -13,6 +13,7 @@ import (
 
 // db is the global database connection pool.
 var db *sql.DB
+var err error
 
 type UserInfo struct {
 	IdUser    string
@@ -35,36 +36,38 @@ type ScanInfo struct {
 	Phone     string
 }
 
-// mustGetEnv is a helper function for getting environment variables.
-// Displays a warning if the environment variable is not set.
-func mustGetenv(k string) string {
-	v := os.Getenv(k)
-	if v == "" {
-		log.Printf("Warning: %s environment variable not set.\n", k)
+func main() {
+	if os.Getenv("DB_TCP_HOST") != "" {
+		db, err = initTcpConnectionPool()
+		if err != nil {
+			log.Fatalf("initTcpConnectionPool: unable to connect: %s", err)
+		}
+	} else {
+		db, err = initSocketConnectionPool()
+		if err != nil {
+			log.Fatalf("initSocketConnectionPool: unable to connect: %s", err)
+		}
 	}
-	return v
+
+	http.HandleFunc("/scan", apiResponse)
+	http.HandleFunc("/", ScanData)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func apiResponse(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-
 	switch r.Method {
 	case "GET":
 		q := r.URL.Query()
 
 		if len(q) < 3 {
-			//log.Println("Url Param 'key' is missing")
 			w.Write([]byte("Url Param 'key' is missing"))
-			//w.WriteHeader(http.StatusBadRequest)
-			//SentData("100", "30", "12345")
 			return
 		} else {
 			longitude := strings.Join(q["longitude"], " ")
-			//fmt.Println(longitude)
 			latitude := strings.Join(q["latitude"], " ")
 			sku := strings.Join(q["sku"], " ")
 			w.WriteHeader(http.StatusOK)
-			//result := longitude + latitude + sku
 			w.Write([]byte("Saved Successfully"))
 			SentData(longitude, latitude, sku)
 		}
@@ -78,53 +81,50 @@ func apiResponse(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func SentData(longitude string, latitude string, sku string) {
-	var err error
-
-	if os.Getenv("DB_TCP_HOST") != "" {
-		db, err = initTcpConnectionPool()
-		if err != nil {
-			log.Fatalf("initTcpConnectionPool: unable to connect: %s", err)
-		}
-	} else {
-		db, err = initSocketConnectionPool()
-		if err != nil {
-			log.Fatalf("initSocketConnectionPool: unable to connect: %s", err)
-		}
+func ScanData(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("home.html"))
+	//db, err := sql.Open("mysql", "kajol:kajol123@(192.168.43.140:3306)/cylindertracker")
+	if err != nil {
+		panic(err.Error())
 	}
-	sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 1," + sku + ",'29-06-2020','01773126589' )"
-	//sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 2,'KAJOL','29-06-2020','01773126589' )"
+	defer db.Close()
+	quryScan := "select  idscan, longitude,latitude,user_id, sku, date, phone_identity from scan"
 
-	//insert, err := db.Query(sql)
+	rows, err := db.Query(quryScan)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	var scans []ScanInfo
+	for rows.Next() {
+		var temp ScanInfo
+		err = rows.Scan(&temp.IdScan, &temp.Longitude, &temp.Latitude, &temp.UserID, &temp.SKU, &temp.FillDate, &temp.Phone)
+		scans = append(scans, temp)
+	}
+
+	queryUser := "select  iduser,name,address,phone,email,password,date,type from user,user_type"
+
+	userRow, err := db.Query(queryUser)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer userRow.Close()
+	var UserInformation []UserInfo
+	for userRow.Next() {
+		var temp UserInfo
+		err = userRow.Scan(&temp.IdUser, &temp.UserName, &temp.Address, &temp.Phone, &temp.UserEmail, &temp.Password, &temp.Date, &temp.UserType)
+		UserInformation = append(UserInformation, temp)
+	}
+	tmpl.Execute(w, map[string]interface{}{"ScanData": scans, "UserInfo": UserInformation})
+}
+
+func SentData(longitude string, latitude string, sku string) {
+	sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 1," + sku + ",'29-06-2020','01773126589' )"
 	if _, err = db.Exec(sql); err != nil {
 		log.Fatalf("DB.Exec: unable to insert into scan table: %s", err)
 	}
-
-	//http.HandleFunc("/", indexHandler)
-	/*port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-
-	/*log.Printf("Listening on port %s", port)
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		log.Fatal(err)
-	}*/
-
-	//db, err := sql.Open("mysql", "root:hello@tcp(35.200.196.27:3306)/cylindertracker")
-
-	//if err != nil {
-	//	panic(err.Error())
-	//}
-	//defer db.Close()
-	//sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 2,'KAJOL','29-06-2020','01773126589' )"
-
-	//insert, err := db.Query(sql)
-	//if err != nil {
-	//	panic(err.Error())
-	//}
-	//
-	//defer insert.Close()
 }
 
 // initTcpConnectionPool initializes a TCP connection pool for a Cloud SQL
@@ -202,51 +202,12 @@ func configureConnectionPool(dbPool *sql.DB) {
 	// [END cloud_sql_mysql_databasesql_lifetime]
 }
 
-func main() {
-	http.HandleFunc("/scan", apiResponse)
-	http.HandleFunc("/", ScanData)
-	log.Fatal(http.ListenAndServe(":8080", nil))
-}
-
-func ScanData(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("home.html"))
-	db, err := sql.Open("mysql", "kajol:kajol123@(192.168.43.140:3306)/cylindertracker")
-	if err != nil {
-		panic(err.Error())
+// mustGetEnv is a helper function for getting environment variables.
+// Displays a warning if the environment variable is not set.
+func mustGetenv(k string) string {
+	v := os.Getenv(k)
+	if v == "" {
+		log.Printf("Warning: %s environment variable not set.\n", k)
 	}
-	defer db.Close()
-	quryScan := "select  idscan, longitude,latitude,user_id, sku, date, phone_identity from scan"
-
-	rows, err := db.Query(quryScan)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer rows.Close()
-
-	var scans []ScanInfo
-	for rows.Next() {
-		var temp ScanInfo
-		err = rows.Scan(&temp.IdScan, &temp.Longitude, &temp.Latitude, &temp.UserID, &temp.SKU, &temp.FillDate, &temp.Phone)
-
-		scans = append(scans, temp)
-		//fmt.Println(temp)
-	}
-
-	quryUser := "select  iduser,name,address,phone,email,password,date,type from user,user_type"
-
-	userRow, err := db.Query(quryUser)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer userRow.Close()
-	var UserInformation []UserInfo
-	for userRow.Next() {
-		var temp UserInfo
-		err = userRow.Scan(&temp.IdUser, &temp.UserName, &temp.Address, &temp.Phone, &temp.UserEmail, &temp.Password, &temp.Date, &temp.UserType)
-		UserInformation = append(UserInformation, temp)
-	}
-
-	tmpl.Execute(w, map[string]interface{}{"ScanData": scans, "UserInfo": UserInformation})
-
+	return v
 }
