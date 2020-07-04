@@ -88,7 +88,7 @@ func ScanData(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 	defer db.Close()
-	quryScan := "select  idscan, longitude,latitude,user_id, sku, date, phone_identity from scan"
+	quryScan := "select  idscan, longitude,latitude,user_id, sku, [date], phone_identity from scan"
 
 	rows, err := db.Query(quryScan)
 
@@ -104,7 +104,7 @@ func ScanData(w http.ResponseWriter, r *http.Request) {
 		scans = append(scans, temp)
 	}
 
-	queryUser := "select  iduser,name,address,phone,email,password,date,type from user,user_type"
+	queryUser := "select  iduser,name,address,phone,email,password,[date],[type] from user,user_type"
 
 	userRow, err := db.Query(queryUser)
 	if err != nil {
