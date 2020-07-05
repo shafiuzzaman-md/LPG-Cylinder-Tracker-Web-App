@@ -83,12 +83,12 @@ func apiResponse(w http.ResponseWriter, r *http.Request) {
 
 func ScanData(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("home.html"))
-	//db, err := sql.Open("mysql", "kajol:kajol123@(192.168.43.140:3306)/cylindertracker")
+	//db, err := sql.Open("mysql", "root:hello@(35.200.196.27:3306)/cylindertracker")
 	if err != nil {
 		panic(err.Error())
 	}
 	defer db.Close()
-	quryScan := "select  idscan, longitude,latitude,user_id, sku, [date], phone_identity from scan"
+	quryScan := "SELECT idscan,longitude,latitude,user_id,sku,date,phone_identity FROM scan"
 
 	rows, err := db.Query(quryScan)
 
@@ -104,7 +104,7 @@ func ScanData(w http.ResponseWriter, r *http.Request) {
 		scans = append(scans, temp)
 	}
 
-	queryUser := "select  iduser,name,address,phone,email,password,[date],[type] from user,user_type"
+	queryUser := "select  iduser,name,address,phone,email,password,type from user,user_type"
 
 	userRow, err := db.Query(queryUser)
 	if err != nil {
