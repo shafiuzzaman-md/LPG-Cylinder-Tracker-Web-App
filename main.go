@@ -76,8 +76,24 @@ func apiRegister(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	switch r.Method {
 	case "GET":
+
+		q := r.URL.Query()
 		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte(`{"message": "Get method requested for Login"}`))
+
+		if len(q) < 3 {
+			w.Write([]byte("URL data missing.."))
+			return
+		} else {
+			username := strings.Join(q["username"], " ")
+			email := strings.Join(q["email"], " ")
+			password := strings.Join(q["password"], " ")
+
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("Saved Successfully"))
+
+			RegisterData(username, email, password)
+		}
 
 	case "POST":
 		w.WriteHeader(http.StatusCreated)
@@ -85,6 +101,13 @@ func apiRegister(w http.ResponseWriter, r *http.Request) {
 	default:
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte(`{"message": "Can't find method requested"}`))
+	}
+}
+
+func RegisterData(Name string, Email string, Password string) {
+	sql := "INSERT INTO user VALUES (default," + Name + "Dhaka," + Email + " 0177215544" + Password + "  )"
+	if _, err = db.Exec(sql); err != nil {
+		log.Fatalf("DB.Exec: unable to insert into scan table: %s", err)
 	}
 }
 
