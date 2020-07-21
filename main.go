@@ -126,7 +126,7 @@ func apiRegister(w http.ResponseWriter, r *http.Request) {
 }
 
 func RegisterData(Name string, Email string, Password string) {
-	sql := "INSERT INTO user VALUES (default," + Name + "Dhaka," + Email + " 0177215544" + Password + "  )"
+	sql := "INSERT INTO user VALUES (default,'" + Name + "','Dhaka','01731283290','" + Email + "','" + Password + "', 1" + ")"
 	if _, err = db.Exec(sql); err != nil {
 		log.Fatalf("DB.Exec: unable to insert into scan table: %s", err)
 	}
