@@ -119,6 +119,7 @@ func ScanData(w http.ResponseWriter, r *http.Request) {
 		err = rows.Scan(&temp.IdScan, &temp.Longitude, &temp.Latitude, &temp.UserID, &temp.SKU, &temp.FillDate, &temp.Phone)
 		scans = append(scans, temp)
 	}
+	fmt.Println(scans)
 
 	tmpl.Execute(w, map[string]interface{}{"ScanData": scans, "UserInfo": UserInformation})
 }
@@ -191,6 +192,7 @@ func configureConnectionPool(dbPool *sql.DB) {
 
 	// Set maximum number of connections in idle connection pool.
 	dbPool.SetMaxIdleConns(5)
+	// new
 
 	// Set maximum number of open connections to the database.
 	dbPool.SetMaxOpenConns(7)
