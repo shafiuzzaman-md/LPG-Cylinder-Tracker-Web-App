@@ -37,7 +37,7 @@ type ScanInfo struct {
 }
 
 func main() {
-	/*if os.Getenv("DB_TCP_HOST") != "" {
+	if os.Getenv("DB_TCP_HOST") != "" {
 		db, err = initTcpConnectionPool()
 		if err != nil {
 			log.Fatalf("initTcpConnectionPool: unable to connect: %s", err)
@@ -47,7 +47,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("initSocketConnectionPool: unable to connect: %s", err)
 		}
-	}*/
+	}
 
 	http.HandleFunc("/scan", apiResponse)
 	http.HandleFunc("/registration", apiRegister)
@@ -117,11 +117,12 @@ func apiResponse(w http.ResponseWriter, r *http.Request) {
 
 func ScanData(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("home.html"))
-	db, err := sql.Open("mysql", "root:hello@(35.200.196.27:3306)/cylindertracker")
+
+	/*db, err := sql.Open("mysql", "root:hello@(35.200.196.27:3306)/cylindertracker")
 	if err != nil {
 		panic(err.Error())
 	}
-	defer db.Close()
+	defer db.Close()*/
 
 	//Get user information from db
 	queryUser := "select  iduser,name,address,phone,email,password from user"
