@@ -63,12 +63,33 @@ func apiLogin(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte(`{"message": "Get method requested for Login"}`))
 
+		q := r.URL.Query()
+
+		if len(q) < 1 {
+			w.Write([]byte("URL data missing.."))
+			return
+		} else {
+			username := strings.Join(q["username"], " ")
+			password := strings.Join(q["password"], " ")
+
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("Saved Successfully"))
+
+			PushLoginData(username, password)
+		}
+
 	case "POST":
 		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte(`{"message": "POST method requested"}`))
 	default:
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte(`{"message": "Can't find method requested"}`))
+	}
+}
+func PushLoginData(Name string, Password string) {
+	sql := "INSERT INTO login VALUES (" + Name + Password + "  )"
+	if _, err = db.Exec(sql); err != nil {
+		log.Fatalf("DB.Exec: unable to insert into scan table: %s", err)
 	}
 }
 
