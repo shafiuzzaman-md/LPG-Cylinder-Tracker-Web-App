@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Cylinder Tracker</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="static/css/sb-admin-2.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <div class="sidebar-brand-icon rotate-n-15">
+         <!-- <i class="fas fa-laugh-wink"></i>-->
+        </div>
+        <div class="sidebar-brand-text mx-2">Cylinder Tracker</div>
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - Dashboard -->
+     <li class="nav-item active">
+        <a class="nav-link" href="index.html">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+      </li>
+
+      <!-- Divider -->
+     <!-- <hr class="sidebar-divider">-->
+
+      <!-- Heading -->
+     <!-- <div class="sidebar-heading">
+        Interface
+      </div>-->
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <!--<li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+          <i class="fas fa-fw fa-cog"></i>
+          <span>Components</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Custom Components:</h6>
+            <a class="collapse-item" href="buttons.html">Buttons</a>
+            <a class="collapse-item" href="cards.html">Cards</a>
+          </div>
+        </div>
+      </li>-->
+
+      <!-- Nav Item - Utilities Collapse Menu -->
+      <!--<li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+          <i class="fas fa-fw fa-wrench"></i>
+          <span>Utilities</span>
+        </a>
+        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Custom Utilities:</h6>
+            <a class="collapse-item" href="utilities-color.html">Colors</a>
+            <a class="collapse-item" href="utilities-border.html">Borders</a>
+            <a class="collapse-item" href="utilities-animation.html">Animations</a>
+            <a class="collapse-item" href="utilities-other.html">Other</a>
+          </div>
+        </div>
+      </li>-->
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+    <!--  <div class="sidebar-heading">
+        Addons
+      </div>-->
+
+      <!-- Nav Item - Pages Collapse Menu -->
+     <!-- <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>Pages</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Login Screens:</h6>
+            <a class="collapse-item" href="login.html">Login</a>
+            <a class="collapse-item" href="register.html">Register</a>
+            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+            <div class="collapse-divider"></div>
+            <h6 class="collapse-header">Other Pages:</h6>
+            <a class="collapse-item" href="404.html">404 Page</a>
+            <a class="collapse-item" href="blank.html">Blank Page</a>
+          </div>
+        </div>
+      </li>-->
+
+        <li class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="color: white !important;">
+          <a style="color: white; padding-left: 15px"  class="nav-link" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-profile" aria-selected="true">
+            <i class="fas fa-fw fa-user-alt"></i>
+            <span>Users</span>
+          </a>
+
+          <a style="color: white; padding-left: 15px" class="nav-link" id="v-pills-scan-tab" data-toggle="pill" href="#v-pills-scan" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+            <i class="fas fa-fw fa-barcode"></i>
+            <span>Scan & Verify</span>
+            </a>
+          <a style="color: white; padding-left: 15px" class="nav-link" id="v-pills-order-tab" data-toggle="pill" href="#v-pills-order" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+            <i class="fas fa-fw fa-shopping-cart"></i>
+            <span>Orders</span>
+          </a>
+          <a style="color: white; padding-left: 15px" class="nav-link" id="v-pills-offer-tab" data-toggle="pill" href="#v-pills-offer" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+            <i class="fas fa-fw fa-gift"></i>
+            <span>Offers</span></a>
+        </li>
+
+      <!-- Nav Item - Charts -->
+    <!--  <li class="nav-item">
+       <a class="nav-link" href="charts.html">
+          <a class="nav-link active show" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-profile" aria-selected="true">Users</a>
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>Charts</span></a>
+      </li>-->
+
+      <!-- Nav Item - Tables -->
+      <!--<li class="nav-item">
+        <a class="nav-link" href="static/pages/tables.html">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Tables</span></a>
+      </li>-->
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block">
+
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+          <!-- Sidebar Toggle (Topbar) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <!-- Topbar Search -->
+          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+            <div class="input-group">
+              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                  <i class="fas fa-search fa-sm"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+            <li class="nav-item dropdown no-arrow d-sm-none">
+              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-search fa-fw"></i>
+              </a>
+              <!-- Dropdown - Messages -->
+              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                <form class="form-inline mr-auto w-100 navbar-search">
+                  <div class="input-group">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search fa-sm"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </li>
+
+            <!-- Nav Item - Alerts -->
+            <li class="nav-item dropdown no-arrow mx-1">
+              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-bell fa-fw"></i>
+                <!-- Counter - Alerts -->
+                <span class="badge badge-danger badge-counter">3+</span>
+              </a>
+              <!-- Dropdown - Alerts -->
+              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                <h6 class="dropdown-header">
+                  Alerts Center
+                </h6>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-primary">
+                      <i class="fas fa-file-alt text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">December 12, 2019</div>
+                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                  </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-success">
+                      <i class="fas fa-donate text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">December 7, 2019</div>
+                    $290.29 has been deposited into your account!
+                  </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-warning">
+                      <i class="fas fa-exclamation-triangle text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">December 2, 2019</div>
+                    Spending Alert: We've noticed unusually high spending for your account.
+                  </div>
+                </a>
+                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+              </div>
+            </li>
+
+            <!-- Nav Item - Messages -->
+            <li class="nav-item dropdown no-arrow mx-1">
+              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-envelope fa-fw"></i>
+                <!-- Counter - Messages -->
+                <span class="badge badge-danger badge-counter">7</span>
+              </a>
+              <!-- Dropdown - Messages -->
+              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
+                <h6 class="dropdown-header">
+                  Message Center
+                </h6>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://source.unsplash.com/fn_BT9fwg_E/60x60" alt="">
+                    <div class="status-indicator bg-success"></div>
+                  </div>
+                  <div class="font-weight-bold">
+                    <div class="text-truncate">Hi there! I am wondering if you can help me with a problem I've been having.</div>
+                    <div class="small text-gray-500">Emily Fowler · 58m</div>
+                  </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://source.unsplash.com/AU4VPcFN4LE/60x60" alt="">
+                    <div class="status-indicator"></div>
+                  </div>
+                  <div>
+                    <div class="text-truncate">I have the photos that you ordered last month, how would you like them sent to you?</div>
+                    <div class="small text-gray-500">Jae Chun · 1d</div>
+                  </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://source.unsplash.com/CS2uCrpNzJY/60x60" alt="">
+                    <div class="status-indicator bg-warning"></div>
+                  </div>
+                  <div>
+                    <div class="text-truncate">Last month's report looks great, I am very happy with the progress so far, keep up the good work!</div>
+                    <div class="small text-gray-500">Morgan Alvarez · 2d</div>
+                  </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
+                    <div class="status-indicator bg-success"></div>
+                  </div>
+                  <div>
+                    <div class="text-truncate">Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</div>
+                    <div class="small text-gray-500">Chicken the Dog · 2w</div>
+                  </div>
+                </a>
+                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+              </div>
+            </li>
+
+            <div class="topbar-divider d-none d-sm-block"></div>
+
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Md. Shafiuzzaman</span>
+                <img class="img-profile rounded-circle" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAPEBAQEBAWEBAWDRIbDRUVDQ8QEA4SIB0iIiAdHx8kKDQsJCYxJx8fLTItMT0uMDAwIys/QDMuSzQ5Oj8BCgoKDg0OFRAPFSsZFhk3Kzc3NzcrNzcrKzcrLTcrLTc3Ky0rLSstKzctMysrNysrLSsrKysrLSsrKysrKysrK//AABEIAMgAyAMBIgACEQEDEQH/xAAcAAEAAQUBAQAAAAAAAAAAAAAABQECAwYHBAj/xAA6EAABAwIEAwUGBQIHAQAAAAABAAIDBBEFEiExBkFREyJhcYEHMpGhsdEjUsHh8BRyFSQzQkNishb/xAAZAQEAAwEBAAAAAAAAAAAAAAAAAQIDBAX/xAAiEQEBAAICAgICAwAAAAAAAAAAAQIRAyESMQRBMlETInH/2gAMAwEAAhEDEQA/AOuIiKzEREQEREBLIiAiKj3BoJJAAF3EkAAdUFV5MSxKGmYZJpAxvK5F3HoBzWo477RYmZo6Rvbv1DZCD2APO3N30Wg1WM1FZK19RI15AszM5rGMB5AN2U6HUf8A7WA+605erjkH0WVvF1Pkzu7g1tdx1tppouM12LFuZjS2xd3rRhoNtl4JMXe7S5AA1sTqoW0+gYMfgdlzHJmAIvbS+wPT1UquCUGNubHa+tveJDiVu/D/ABi4OaCxxgyWIDL5PEfO/wCyIdERYaOrjmaHxuzNPxHmsyIEREBERAREQEREBERAREQEREBERBVci484uNW91LC61K1xEpFrzkH/AM/VbR7UsbNNSiFjyySZxBLbZhCPeN+W4HxXD56kgZQpidPbNJECGhzm698i+3Sywz1AaQWHQDod1HMuT1KkGRE7NNvJRavIxF2fUnW+puV6aPCy/wD3BoJGpBd8gqw0L3bMPwWycO4dKxweWFzWPDst7NJG11S5yLTC1HV9M2FwYyXtgBYfhyMc3ryFluXs5q4nvMb49ibE308OgWSmwBs4lle0h+7AScz3a3156kKBwpktFUAG7HvORzS82LL2vYqJnL0XDToc9XFEXiEd4X2Ja74/dS3D2JmoY/MCHMfYmw7wIuCtFxaR7HOcw5ojo8nO+9uo3afJTXA+JRtlfT3AMkYfHZ1w62487fRaSdMq3VERECIiAiIgIiICIiAiIgIiICsqJmxsc92jWsJd5AXKvWve0CrMOHVDhuQxvvWsC4AlBw7inFpauolmkJu5x7Npv+HHyaPIKCNybLNUy5nE35r0YXFnde17kBLlJNtMcbbpO8O4KHWuNSFvNNw9GAO6NOa8OERiMWsL/NbJFMbCwXm3k8q9OcfjOnlZgzOYt5KVoMObGRYXG/irIcx0NvmvfBG4bK+KmVZnUjLt0NuWxWuVuEvfW/1HZDMwfgXd7ztsxHz+C2uOPYluqyzQDKTbW1vRbT9sMu+nNsTr81U6IOJYM1gCRfXU6cwfkV44o5YZoJmucZ2S3Ac7cXsR9V4seqZKLEDIzQiYuF7G7ToRbnzU9QYhTRF804a+SSTNEyK5awjYC+tzcrfc05csbt05jrgHqFVefDpu0iY/kRceS9ClUREUoEREBERAREQEREBERAWl+1uvZFh5jcAXTSsbHe/dt3i70t81ui5h7cn/AIdELf8ALMb+jUTHJY4DI7K3mVvGB4KI8pIv91EcF0Qe57yL5TYea26sxOKntnNjbQDcrk5srcvGO/gwmOPnUxRUoGp+fJT9LE11lzxvGbbasO/XkpfCuKob+/bTS+6z8bj3pp5zP7br/TAbL30eUeGi12HGmPtldfy5LFU8SxRPIc7Ue8FM5cS8eTd2OBWaSEEWtotAh49pQbB1/wAvJT2HcZU0xDc1r7c/it/cctmr0032l8NSOHbt1yts6w3HVaJgk7Y5Y5HgODCbg8r9F9Cv7OZjho9jrg9CuHcTYUKWslgGjXas8ir4ddK5zfbq3ClYyWAhpvkeQ7fc6qZXNvZbO4zSsvYCDvj8xBAB8910laMBERECIiAiIgIiICIiAiIgLQfbPAX0MeXUtqQ4jS+XKQT6XC35c59sDrMhIGuST5kKuWWptpx4eWWmhcLtmjDSB+FJKA82GhH0Wy4tDBHaSSLtDlGhc4n6qnDUH+ViBFrtJPndSxwhsgAL9QLXXHnbc7Y7ZjZhO2p1AYchFLSlrmki3ayPFuRF91gvCC0OpYwS27izt48h6brcRw+8HQ+oACpPgDI2kuIzHUkuUeeWu0zim9ysPDdEx8gyEgdmC4E3yk8rr043gMLXOeRncTtmflyqZ4SwotJk1OZ3NbFV4a1zu80EnYkXt1CjHjutr5596240HMNzHR09xJYtdBMX267rZMNrXU7BI6kgDC4hvZh7H+ZF9ltUnCsYeXhtjfXcFSFNgTdLk26Gyv8A3t057NXe2HAMSZI13ZsygMzW13XNfaZHVmZlVJC5gdC0MysJYADzPI6812SnwiNmoAv5KK40FqcG20jRz2Oi1xlmtqZd701j2RykwVDHAAtlaW9wB+VwJ33te631Q/DMbuzc9wF3P7tuTBsPIKYWuGXlNsOTHxysERFdQREQEREBERAREQEREBaf7S6LtKdrrXy9oPi3T6LcFG8RQB9O8E2tY3/LqqZzeNa8WWs451grMsEY6MHopWmYb6/XdRrHZXae7fTfZSUMuy83P3t6+HrSWheVFVJ7afKb5GMudfeddZZasMbcnr0WrYvW9oHNjuD1BN0x8svRfHH26Dg+JNHulpaDbRwNlPtxGGUmPMM43GYXC4hhtLPTg1DGkEvs4NB79+oC3PBcDymOZ0Zvo5xDcrifE7rfH+SdTtz5/wAd7vTa6bE3NkfG45gH90nm1TEVQDyUDVuY5wsLP5L0QONrbFJcsbqq5THKbiba878lB8YjNTEWuO1j09VKsk0CtdEJNCAeYvsDyK1u6xmpe2Kijytta3eNlnVGj6lVW+M1JHLnd5WiIisqIiICIiAiIgIiICIiArJ4g9rmHYtIKvRQlznHqB0ExDtczbtIO/8ALLxwykFbnxlh7pYQ9gu+N19Brktr+i0QG/nquHmw1Xp/H5PLHf2zYhJe3Qha/FWvJcI4SHA2zOIDfgpme7rDkFfHTBzQALHqNFnjZjG2U8rtbhbJ7hxkYD/c9q2RlLWBofFVRudbVmR7c3hdarJgMkjrd4255iLLY8D4dliAJc7wBcTotpldb0zy162wf47MJ2sngMJtodHNcfAhbZDJmaHBRuIUuYBr23tsdFlpXEADkErL/ExFKvRHI4O7o7ttToouKS+3XxUvE2wA581rxzbDky0uCIi6HKIiICIiAiIgIiICIiAiIgIiIC5njND2NRK1o7oebeAOv6rpoF9FzfjR8kNbI62nd0/M22/msuXHcdPxsrMtREyOsLbK+KsIFhprv1VsdRFMNDb5Kr6V3Kx6bLnuE+nZ51LUOJ5d/NTtHjgNtfotNFK825aLIyKQacvVJ5T7RlJZ6bhU1geM19ui8zKkv20uo2kY5ze8dVNUVOABdX8dsd6SeGRaglSi8tEPRepb4enNy/kIiK7IREQEREBERAREQEREBERARVWRkDj4eaCtM25v0URxdw42tZdtmztByO5PH5T9+SnomBo666qpSzftfG2XcfPmJUMlPK5kjTFINwRuP1Hiq0uJSN0Jt4jULuGN4HT1rMk7A63uOGj4z1BXMsf4HqKS72Azw/maPxGD/s39QubPjyx7ju4+XHLq9VGxYu7nr6L0wYg9xsG3+KjI4L22KlcMZY7XHjdc3l26vHpO4exx30Ww00YFlGUY00t6KWpIySANSfdC3xyt6cuck7S1JHdrjzFrKq90EIa0N301PUrxFdOPUcXJ3VERFZmIiICIiAiIgIiICIrmtvoEFqzRwE76BZoae2p1P0WYonSxkQbt8VUlVurSEFrTuFdZWSA7jdXNcCLqSLrKoCBc69o/tBdRk0tIL1BbeSUtBZCPDq75BNW9LJ7HuHKWV12lsUx5CwD/ADA281BjADFcuiNhuQ4Ob8lyv/G5S90hcTI43c7O7OT4nmpag4pq2uuyYg/3FwPx5K+XwZn6vZj8zLHqzp0elk2ZDGXvOwH6nktswqg7Jt3HNKR3zyHgPBcrh4trTGWZ25S3lFGNOu2ig8P4mxChmHYzPnYXXdFIHyB3py9EnwcuObRfmY8l1H0AsL6dp8CvDw7iwrIGTZDE4/6kbiC6N3RSiy9L+3ifTkbarEQpJWvjB3CbV8Uci9ElMRtr9VgIsivpRERSgREQFUAnQaq+OIu8B1XsjjDdkTJthjpfzLO1gGwsrrooWUKtcrla5SrVGq6ytYsiUixwWFoynwPyK9BVpaCkqXnqZbCw3O/gFo3E/A0dS1zotHbhpJ0d1B5LfjGFjfGrS/o2+ZcSw6WmkMUrCx45EWuOqtppLH6/uu5cbYBHWQHM2z2gmN4HeYfsuFzwuieWuFiHa/cLr489sOTDTaqB4y/O/wCp+y3vgfhxskLqiQG8jiGbg9mOvmVznCqluTVwaeV3C9/uu84FTCKmgYNhCz6arT5XJZjJPtlwYf3ry4bh39MSW+673hyUy031SyqF51u3bOhERVWFa9gO4urkQeV9L0PoVgc0jQiykVa9gdoVKtx/SORXysym3wRSq9wCqCrc1lVQlVFbfVXEICtejSqSFSikayK2PZXFRUz0Kwq9UIRNUVHNVbIpVeSdmhXCvaXFG2texgAsxhfb8x1sfS3xXe5hovmviOtNRVVM3J0zy3+29h8gunhm9qZ36SnChYXAOa0joWg/wLv+HyB0UbhsY28rcl88cMO74H8H7LtPC2IbQu5tu2/XmFr8jDywln0x4c/Hksv22ZERee7RERARERAUVCqqRjmjzDx5KqvRQWbYyLixVsLrGx9ERXVXkfsqtNwiKBa5WnUoiRDMEKIoWAgRESKiIiEdxFUdlSVMl7ZaeQjzylfM7/590RdfB+NYcntK4BJlePl9x9l0fC67K5jgdW2IRF2YzeHbj5LrKOlxSB7Q4bFoIV6IvIsenKIiIkREUJUIVURSgREUJf/Z">
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Profile
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Settings
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Activity Log
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+
+          </ul>
+
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
+       <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+          </div>-->
+
+          <div class="row" style="font-size: 10px">
+           <!-- <div class="col-sm-2 left text-center" >
+              <br/> <br/> <br/> <br/>
+              <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active show" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-profile" aria-selected="true">Users</a>
+                <a class="nav-link" id="v-pills-scan-tab" data-toggle="pill" href="#v-pills-scan" role="tab" aria-controls="v-pills-messages" aria-selected="false">Scan & verify</a>
+                <a class="nav-link" id="v-pills-order-tab" data-toggle="pill" href="#v-pills-order" role="tab" aria-controls="v-pills-settings" aria-selected="false">Orders</a>
+                <a class="nav-link" id="v-pills-offer-tab" data-toggle="pill" href="#v-pills-offer" role="tab" aria-controls="v-pills-settings" aria-selected="false">Offers</a>
+              </div>
+            </div>-->
+
+            <div class="col-sm-12 middle">
+
+              <div class="tab-content" id="v-pills-tabContent">
+                <!--User Tab-->
+                <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                  <p>
+                  <table id="usertab" class="table table-bordered table-striped table-index">
+                    <h3 class="text-center ">User's Information </h3>
+                    <thead>
+                    <tr >
+                      <th id="sl" scope="col">Sl.</th>
+                      <th scope="col"> Name</th>
+
+                      <th scope="col">Address</th>
+                      <th scope="col"> Phone </th>
+                      <th scope="col"> Email </th>
+                      <th scope="col"> Password (Encrypted)</th>
+                      <th scope="col"> Location </th>
+                      <th scope="col"> Phone Identity </th>
+                      <th scope="col"> Download Date </th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {{range .UserInfo}}
+                      <tr>
+                        <th>{{.IdUser}}</th>
+                        <th>{{.UserName}}</th>
+
+                        <th> {{.Address}}</th>
+                        <th>{{.Phone}}</th>
+                        <th>{{.UserEmail}}</th>
+                        <th>{{.Password}}</th>
+                        <th></th>
+                        <th>{{.Date}}</th>
+                        <th></th>
+                      </tr>
+                    {{ end }}
+                    </tbody>
+                  </table>
+                  </p>
+
+                </div>
+
+                <!--Scan Tab-->
+                <div class="tab-pane fade" id="v-pills-scan" role="tabpanel" aria-labelledby="v-pills-scan-tab">
+                  <table id="scan" class="display table table-bordered table-condensed" style="width:100%">
+                    <h3 class="text-center">Cylinder Scan and Verify </h3>
+                    <thead>
+                    <tr>
+                      <th scope="col">S.I</th>
+                      <th scope="col">Scanned Longitude</th>
+                      <th scope="col">Scanned Latitude</th>
+                      <!--<th scope="col">User Account</th>-->
+                      <!-- <th scope="col">Matched location</th>-->
+                      <th scope="col">Product ID</th>
+                      <th scope="col">Product SKU</th>
+                      <th scope="col">Batched No</th>
+                      <th scope="col">Filled date</th>
+                      <!--  <th scope="col">Delivered location</th>-->
+                      <!--<th scope="col">Delivered Date</th>-->
+                      <!--<th scope="col" >Checked</th>-->
+                    </tr>
+                    </thead>
+
+                    <tbody style="font-weight: lighter !important;">
+                    {{ range .ScanData }}
+                      <tr>
+                        <th>{{.IdScan}}</th>
+                        <th>{{.Longitude}}</th>
+                        <th>{{.Latitude}}</th>
+                        <!-- <th>{{.UserID}}</th>-->
+                        <!--  <th>Not Yet</th>--->
+                        <th>Not Yet</th>
+                        <th>{{.SKU}}</th>
+                        <th>Not Yet</th>
+                        <th>{{.FillDate}}</th>
+                        <!--   <th>Not Yet</th>-->
+                        <!--   <th>Not Yet</th>-->
+                        <!--<th>{{.Phone}}</th>-->
+                      </tr>
+                    {{ end }}
+
+                    </tbody>
+                  </table>
+
+                </div>
+                <div class="tab-pane fade" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab">
+
+                  <table id="ordertab" class="table table-bordered table-striped ">
+                    <h3 class="text-center ">Orders </h3>
+                    <thead>
+                    <tr>
+                      <th scope="col">S.I</th>
+                      <th scope="col">Order No</th>
+                      <th scope="col">User Account No.</th>
+                      <th scope="col">User Name</th>
+                      <th scope="col">Delivered Address</th>
+                      <th scope="col">Delivered Location</th>
+                      <th scope="col">Product SKU</th>
+                      <th scope="col">Product QTY</th>
+                      <th scope="col">Requested Delivery date</th>
+                      <th scope="col" >Checked</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                      <th>1</th>
+                      <th>Dhaka</th>
+                      <th>0353DA</th>
+                      <th>YES</th>
+                      <th>544343</th>
+                      <th>Mark</th>
+                      <th>Ott</th>
+                      <th>Male</th>
+                      <th>DHAKA</th>
+                      <th>YES</th>
+
+                    </tr>
+
+
+                    <tr>
+                      <th>1</th>
+                      <th>Dhaka</th>
+                      <th>0353DA</th>
+                      <th>YES</th>
+                      <th>544343</th>
+                      <th>Mark</th>
+                      <th>Ott</th>
+                      <th>Male</th>
+                      <th>DHAKA</th>
+                      <th>YES</th>
+
+                    </tr>
+
+                    <tr>
+                      <th>1</th>
+                      <th>Dhaka</th>
+                      <th>0353DA</th>
+                      <th>YES</th>
+                      <th>544343</th>
+                      <th>Mark</th>
+                      <th>Ott</th>
+                      <th>Male</th>
+                      <th>DHAKA</th>
+                      <th>YES</th>
+
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="tab-pane fade" id="v-pills-offer" role="tabpanel" aria-labelledby="v-pills-offer-tab">
+                  <table id="offertab" class="table table-bordered table-striped ">
+                    <h3 class="text-center "> New Offers </h3>
+                    <thead>
+                    <tr>
+                      <th scope="col">S.I</th>
+                      <th scope="col">Offer</th>
+                      <th scope="col">Select Users</th>
+                      <th scope="col">Open Date</th>
+                      <th scope="col">Close Date</th>
+                      <th scope="col" >Checked</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr>
+                      <th>1</th>
+                      <th>10% discount</th>
+                      <th>All Users </th>
+                      <th> 29-06-2020</th>
+                      <th> 30-06-2020</th>
+                      <th>YES</th>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+
+
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Cylinder Tracker 2020</span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="login.html">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="static/vendor/jquery/jquery.min.js"></script>
+  <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="static/sb-admin-2.min.js"></script>
+
+  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+  <!-- Page level plugins -->
+  <script src="static/Chart.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="static/demo/chart-area-demo.js"></script>
+  <script src="static/demo/chart-pie-demo.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#scan').DataTable();
+      $('#usertab').DataTable();
+      $('#ordertab').DataTable();
+      $('#offertab').DataTable();
+    } );
+  </script>
+</body>
+
+</html>

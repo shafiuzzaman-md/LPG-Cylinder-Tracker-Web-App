@@ -49,6 +49,9 @@ func main() {
 		}
 	}
 
+	fs := http.FileServer(http.Dir("./static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+
 	http.HandleFunc("/scan", apiResponse)
 	http.HandleFunc("/registration", apiRegister)
 	http.HandleFunc("/login", apiLogin)
@@ -160,7 +163,7 @@ func apiResponse(w http.ResponseWriter, r *http.Request) {
 }
 
 func ScanData(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("home.html"))
+	tmpl := template.Must(template.ParseFiles("index.html"))
 
 	/*db, err := sql.Open("mysql", "root:hello@(35.200.196.27:3306)/cylindertracker")
 	if err != nil {
