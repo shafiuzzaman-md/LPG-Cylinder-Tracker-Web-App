@@ -4,11 +4,15 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/kelvins/geocoder"
+	_ "github.com/kelvins/geocoder"
 	"html/template"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
+	"time"
 )
 
 // db is the global database connection pool.
@@ -32,8 +36,9 @@ type ScanInfo struct {
 	Latitude  string
 	UserID    string
 	SKU       string
-	FillDate  string
+	ScanDate  string
 	Phone     string
+	Location  string
 }
 
 func main() {
@@ -52,7 +57,7 @@ func main() {
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	http.HandleFunc("/scan", apiResponse)
+	http.HandleFunc("/scan", apiScan)
 	http.HandleFunc("/registration", apiRegister)
 	http.HandleFunc("/login", apiLogin)
 	http.HandleFunc("/", ScanData)
@@ -135,7 +140,7 @@ func RegisterData(Name string, Email string, Password string) {
 	}
 }
 
-func apiResponse(w http.ResponseWriter, r *http.Request) {
+func apiScan(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	switch r.Method {
 	case "GET":
@@ -150,7 +155,7 @@ func apiResponse(w http.ResponseWriter, r *http.Request) {
 			sku := strings.Join(q["sku"], " ")
 			w.WriteHeader(http.StatusOK)
 			w.Write([]byte("Saved Successfully"))
-			SentData(longitude, latitude, sku)
+			InserScanData(longitude, latitude, sku)
 		}
 
 	case "POST":
@@ -162,9 +167,48 @@ func apiResponse(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func ScanData(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("index.html"))
+func InserScanData(longitude string, latitude string, sku string) {
+	/*	db, err := sql.Open("mysql", "root:hello@(35.200.196.27:3306)/cylindertracker")
+		if err != nil {
+			panic(err.Error())
+		}
+		defer db.Close()*/
+	geocoder.ApiKey = "AIzaSyCsqEavGLwdmyqzwqpRdGJ9MhNYW0kcABs"
+	floatLatitude, _ := strconv.ParseFloat(latitude, 64)
+	floatLongitude, _ := strconv.ParseFloat(longitude, 64)
+	// Set the latitude and longitude
+	location := geocoder.Location{
+		Latitude:  floatLatitude,
+		Longitude: floatLongitude,
+	}
+	addresses, geoErr := geocoder.GeocodingReverse(location)
+	address := "Location not found"
+	if geoErr != nil {
+		fmt.Println("Could not get the addresses: ", err)
 
+	} else {
+		// Usually, the first address returned from the API
+		// is more detailed, so let's work with it
+		address = addresses[1].FormatAddress()
+
+		// Print the address formatted by the geocoder package
+		fmt.Println(addresses[0].FormatAddress())
+		// Print the formatted address from the API
+		//fmt.Println(address.FormattedAddress)
+		// Print the type of the address
+		//fmt.Println(address.Types)
+	}
+	str_address := "'" + address + "'"
+	date := "'" + time.Now().Format("2006-01-02 3:4:5 PM") + "'"
+	sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 1," + sku + "," + date + ",'01773126589'," + str_address + ")"
+	if _, err = db.Exec(sql); err != nil {
+		log.Fatalf("DB.Exec: unable to insert into scan table: %s", err)
+	}
+}
+
+func ScanData(w http.ResponseWriter, r *http.Request) {
+
+	tmpl := template.Must(template.ParseFiles("index.html"))
 	/*db, err := sql.Open("mysql", "root:hello@(35.200.196.27:3306)/cylindertracker")
 	if err != nil {
 		panic(err.Error())
@@ -186,31 +230,25 @@ func ScanData(w http.ResponseWriter, r *http.Request) {
 		UserInformation = append(UserInformation, temp)
 	}
 
-	quryScan := "SELECT idscan,longitude,latitude,user_id,sku,date,phone_identity FROM scan"
+	quryScan := "SELECT idscan,longitude,latitude,user_id,sku,date,phone_identity, scanned_location FROM scan"
 
 	rows, err := db.Query(quryScan)
 
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	defer rows.Close()
 
 	var scans []ScanInfo
+
 	for rows.Next() {
 		var temp ScanInfo
-		err = rows.Scan(&temp.IdScan, &temp.Longitude, &temp.Latitude, &temp.UserID, &temp.SKU, &temp.FillDate, &temp.Phone)
+		err = rows.Scan(&temp.IdScan, &temp.Longitude, &temp.Latitude, &temp.UserID, &temp.SKU, &temp.ScanDate, &temp.Phone, &temp.Location)
 		scans = append(scans, temp)
 	}
 	fmt.Println(scans)
-
 	tmpl.Execute(w, map[string]interface{}{"ScanData": scans, "UserInfo": UserInformation})
-}
-
-func SentData(longitude string, latitude string, sku string) {
-	sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 1," + sku + ",'29-06-2020','01773126589' )"
-	if _, err = db.Exec(sql); err != nil {
-		log.Fatalf("DB.Exec: unable to insert into scan table: %s", err)
-	}
 }
 
 // initTcpConnectionPool initializes a TCP connection pool for a Cloud SQL
