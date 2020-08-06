@@ -195,14 +195,15 @@ func InserScanData(longitude string, latitude string, sku string) {
 	} else {
 		// Usually, the first address returned from the API
 		// is more detailed, so let's work with it
-		address = addresses[1].FormatAddress()
-
+		address1 := addresses[1].FormatAddress()
+		address0 := addresses[0].FormatAddress()
 		// Print the address formatted by the geocoder package
-		fmt.Println(addresses[0].FormatAddress())
+		//fmt.Println(addresses[0].FormatAddress())
 		// Print the formatted address from the API
 		//fmt.Println(address.FormattedAddress)
 		// Print the type of the address
 		//fmt.Println(address.Types)
+		address = "1: " + address0 + "\n2: " + address1
 	}
 	str_address := "'" + address + "'"
 	//init the loc
