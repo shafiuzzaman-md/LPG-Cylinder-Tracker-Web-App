@@ -54,6 +54,16 @@ func main() {
 		}
 	}
 
+	// For development
+	_, ok := os.LookupEnv("DB_USER")
+	if !ok {
+		db, err = sql.Open("mysql", "root:hello@(35.200.196.27:3306)/cylindertracker")
+		if err != nil {
+			panic(err.Error())
+		}
+		defer db.Close()
+	}
+
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
@@ -168,11 +178,7 @@ func apiScan(w http.ResponseWriter, r *http.Request) {
 }
 
 func InserScanData(longitude string, latitude string, sku string) {
-	/*	db, err := sql.Open("mysql", "root:hello@(35.200.196.27:3306)/cylindertracker")
-		if err != nil {
-			panic(err.Error())
-		}
-		defer db.Close()*/
+
 	geocoder.ApiKey = "AIzaSyCsqEavGLwdmyqzwqpRdGJ9MhNYW0kcABs"
 	floatLatitude, _ := strconv.ParseFloat(latitude, 64)
 	floatLongitude, _ := strconv.ParseFloat(longitude, 64)
@@ -199,7 +205,11 @@ func InserScanData(longitude string, latitude string, sku string) {
 		//fmt.Println(address.Types)
 	}
 	str_address := "'" + address + "'"
-	date := "'" + time.Now().Format("2006-01-02 3:4:5 PM") + "'"
+	//init the loc
+	loc, _ := time.LoadLocation("Asia/Dhaka")
+	//set timezone,
+	now := time.Now().In(loc)
+	date := "'" + now.Format("2006-01-02 3:4:5 PM") + "'"
 	sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 1," + sku + "," + date + ",'01773126589'," + str_address + ")"
 	if _, err = db.Exec(sql); err != nil {
 		log.Fatalf("DB.Exec: unable to insert into scan table: %s", err)
@@ -209,11 +219,6 @@ func InserScanData(longitude string, latitude string, sku string) {
 func ScanData(w http.ResponseWriter, r *http.Request) {
 
 	tmpl := template.Must(template.ParseFiles("index.html"))
-	/*db, err := sql.Open("mysql", "root:hello@(35.200.196.27:3306)/cylindertracker")
-	if err != nil {
-		panic(err.Error())
-	}
-	defer db.Close()*/
 
 	//Get user information from db
 	queryUser := "select  iduser,name,address,phone,email,password from user"
