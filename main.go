@@ -195,22 +195,22 @@ func InserScanData(longitude string, latitude string, sku string) {
 	} else {
 		// Usually, the first address returned from the API
 		// is more detailed, so let's work with it
-		address1 := addresses[1].FormatAddress()
-		address0 := addresses[0].FormatAddress()
+		address = addresses[1].FormatAddress()
+		//address0 := addresses[0].FormatAddress()
 		// Print the address formatted by the geocoder package
 		//fmt.Println(addresses[0].FormatAddress())
 		// Print the formatted address from the API
 		//fmt.Println(address.FormattedAddress)
 		// Print the type of the address
 		//fmt.Println(address.Types)
-		address = "1: " + address0 + "\n2: " + address1
+		//address = "1: " + address0 + "\n2: " + address1
 	}
 	str_address := "'" + address + "'"
 	//init the loc
 	loc, _ := time.LoadLocation("Asia/Dhaka")
 	//set timezone,
 	now := time.Now().In(loc)
-	date := "'" + now.Format("2006-01-02 3:4:5 PM") + "'"
+	date := "'" + now.Format("2006-01-02 3:4 PM") + "'"
 	sql := "INSERT INTO scan VALUES (default," + longitude + "," + latitude + ", 1," + sku + "," + date + ",'01773126589'," + str_address + ")"
 	if _, err = db.Exec(sql); err != nil {
 		log.Fatalf("DB.Exec: unable to insert into scan table: %s", err)
