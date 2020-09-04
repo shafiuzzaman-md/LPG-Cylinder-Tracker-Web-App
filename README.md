@@ -1,6 +1,6 @@
 # Connecting to Cloud SQL (MySQL) from a Go web app
 
-This repo contains the Go source code for a simple web app that can be deployed to App Engine Standard. It is a demonstration of how to connect to a MySQL instance in Cloud SQL. The application is the "Tabs vs Spaces" web app used in the [Building Stateful Applications With Kubernetes and Cloud SQL](https://www.youtube.com/watch?v=qVgzP3PsXFw&t=1833s) session at Cloud Next '19.
+This repo contains the Go source code for LPG-Cylinder-Tracker web app that can be deployed to App Engine Standard. 
 
 ## Before you begin
 
