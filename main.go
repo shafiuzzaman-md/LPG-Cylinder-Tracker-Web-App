@@ -57,7 +57,7 @@ func main() {
 	// For development
 	_, ok := os.LookupEnv("DB_USER")
 	if !ok {
-		db, err = sql.Open("mysql", "root:hello@(35.200.196.27:3306)/cylindertracker")
+		db, err = sql.Open("mysql", "root:hello@(35.224.159.195:3306)/cylindertracker")
 		if err != nil {
 			panic(err.Error())
 		}
